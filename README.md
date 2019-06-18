@@ -108,7 +108,7 @@ Using no Iris setosa, all 50 Iris versicolor, and only the first 20 Iris versico
 samples.
 
 ![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/asymmetric/cm.png)
-![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/full_dataset/asymmetric.png)
+![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/asymmetric/classification.png)
 
 ## License
 
