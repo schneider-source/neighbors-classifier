@@ -36,7 +36,7 @@ class Params:
                'sklearn.neighbors.RadiusNeighborsClassifier', fmt='bh')
 
         # create directory to dump figures
-        self.odir = mkdir('out_neighbors_classifier', replace=True)
+        self.odir = mkdir('images', replace=True)
 
         # load iris data, further info at
         # https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html
@@ -54,7 +54,7 @@ class Params:
         pca = PCA(n_components=2)
         self.xx = pca.fit_transform(xx, self.yy)
         aprint('\nPCA: EVR = {}, SUM = {}'.format(pca.explained_variance_ratio_,
-                                                  pca.explained_variance_ratio_.sum()), fmt='i')
+                                                  pca.explained_variance_ratio_.sum()))
 
         # create mesh digitizing the feature space
         self.num = 401
@@ -101,17 +101,15 @@ def test_performance(xx=_par_.xx, yy=_par_.yy, odir=_par_.odir):
         acc_rnc.add_targets(yy_test, yy_pred), cm_rnc.add_targets(yy_test, yy_pred)
 
     # print performance measures for both classifiers
-    aprint('\nNeighborsClassifier:', fmt='i')
-    aprint(acc_onc.get_mean(), fmt='i')
-    aprint('confusion matrix', fmt='i')
-    aprint(cm_onc.get_normed_cm(), fmt='i')
+    aprint('\nNeighborsClassifier:')
+    aprint(acc_onc.get_mean())
 
-    aprint('\nsklearn.neighbors.RadiusNeighborsClassifier:', fmt='i')
-    aprint(acc_rnc.get_mean(), fmt='i')
-    aprint('confusion matrix', fmt='i')
-    aprint(cm_rnc.get_normed_cm(), fmt='i')
+    aprint('\nsklearn.neighbors.RadiusNeighborsClassifier:')
+    aprint(acc_rnc.get_mean())
 
     # plot confusion matrices
+    file = os.path.join(odir, 'cm.png')
+    aprint('\nFor the confusion matrices see figure {}.'.format(file), fmt='w')
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
     plt.subplots_adjust(wspace=0.4)
     fig.suptitle('Confusion Matrix', fontsize=18)
@@ -119,7 +117,7 @@ def test_performance(xx=_par_.xx, yy=_par_.yy, odir=_par_.odir):
                           title='NeighborsClassifier')
     plot_confusion_matrix(ax2, cm_rnc.get_normed_cm(), _par_.label_names,
                           title='sklearn.neighbors.RadiusNeighborsClassifier')
-    fig.savefig(os.path.join(odir, 'cm.png'), dpi=200)
+    fig.savefig(file, dpi=200)
 
 
 def classify_feature_space(xx=_par_.xx, yy=_par_.yy, odir=_par_.odir):
@@ -138,6 +136,9 @@ def classify_feature_space(xx=_par_.xx, yy=_par_.yy, odir=_par_.odir):
     rnc_pred = _par_.rnc.predict(_par_.mesh)
 
     # plot figure showing classification of the feature space for classifiers
+    file = os.path.join(odir, 'classification.png')
+    aprint('\nFor feature space classification see figure {}.'.format(file), fmt='w')
+
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
     plt.subplots_adjust(wspace=0.3)
     fig.suptitle('Classification', fontsize=18)
@@ -158,7 +159,7 @@ def classify_feature_space(xx=_par_.xx, yy=_par_.yy, odir=_par_.odir):
            xlabel='Principal Axis 1', ylabel='Principal Axis 2')
     ax2.legend()
 
-    fig.savefig(os.path.join(odir, 'classification.png'), dpi=200)
+    fig.savefig(file, dpi=200)
 
     # plot figure showing confidence measure of OwnNeighborsClassifier
     fig, ax = plt.subplots()
@@ -180,17 +181,16 @@ def compare_runtime():
     _par_.onc.fit(_par_.xx, _par_.yy)
     _par_.onc.predict(_par_.mesh)
     t_onc = time.time() - t0
-    aprint('\nRuntime NeighborsClassifier = {0:4.3f} sec'.format(t_onc), fmt='i')
+    aprint('\nRuntime NeighborsClassifier = {0:4.3f} sec'.format(t_onc))
 
     t0 = time.time()
     _par_.rnc.fit(_par_.xx, _par_.yy)
     _par_.rnc.predict(_par_.mesh)
     t_rnc = time.time() - t0
-    aprint('\nRuntime sklearn.neighbors.RadiusNeighborsClassifier = {0:4.3f} sec'.format(t_rnc),
-           fmt='i')
+    aprint('Runtime sklearn.neighbors.RadiusNeighborsClassifier = {0:4.3f} sec'.format(t_rnc))
 
-    aprint('\nMy classifier is {0:4.2f} x faster than sklearn classifier.'
-           .format(t_rnc / t_onc), fmt='i')
+    aprint('My classifier is {0:4.2f} x faster than the sklearn classifier.'
+           .format(t_rnc / t_onc))
 
 
 def example():
@@ -203,18 +203,19 @@ def example():
     odir = mkdir(os.path.join(_par_.odir, 'full_dataset'))
     test_performance(odir=odir)
     aprint('\nMy NeighborsClassifier should have slightly better performance'
-           '\nthan sklearn.neighbors.RadiusNeighborsClassifier.', fmt='i')
+           '\nthan sklearn.neighbors.RadiusNeighborsClassifier.')
 
     # classify the feature space using the full dataset and create figures
     classify_feature_space(odir=odir)
 
     # measure classification performance of selected data containing
-    # 50 samples of versicolor and 20 of virginica (asymmetric label frequency)
+    # 50 samples of versicolor and the first 20 of virginica (asymmetric label frequency)
     aprint('\nTest performance of classifiers for asymmetric data', fmt='bi')
+    aprint('(using no setosa, all 50 versicolor, and only 20 versicolor samples)')
     odir = mkdir(os.path.join(_par_.odir, 'asymmetric'))
     test_performance(_par_.xx[50:120], _par_.yy[50:120], odir=odir)
     aprint('\nMy NeighborsClassifier should have significantly better performance'
-           '\nthan sklearn.neighbors.RadiusNeighborsClassifier.', fmt='i')
+           '\nthan sklearn.neighbors.RadiusNeighborsClassifier.')
 
     # classify the feature space using asymmetric data and create figures
     classify_feature_space(_par_.xx[50:120], _par_.yy[50:120], odir=odir)
