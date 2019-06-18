@@ -61,12 +61,12 @@ accuracy_score    0.9452
 sklearn.neighbors.RadiusNeighborsClassifier:
 accuracy_score    0.888
 
-For the confusion matrices see figure out/full_dataset/cm.png.
+For the confusion matrices see figure images/full_dataset/cm.png.
 
 My NeighborsClassifier should have slightly better performance
 than sklearn.neighbors.RadiusNeighborsClassifier.
 
-For feature space classification see figure out/full_dataset/classification.png.
+For feature space classification see figure images/full_dataset/classification.png.
 
 Test performance of classifiers for asymmetric data
 (using no setosa, all 50 versicolor, and only 20 versicolor samples)
@@ -77,12 +77,12 @@ accuracy_score    0.943333
 sklearn.neighbors.RadiusNeighborsClassifier:
 accuracy_score    0.774167
 
-For the confusion matrices see figure out/asymmetric/cm.png.
+For the confusion matrices see figure images/asymmetric/cm.png.
 
 My NeighborsClassifier should have significantly better performance
 than sklearn.neighbors.RadiusNeighborsClassifier.
 
-For feature space classification see figure out/asymmetric/classification.png.
+For feature space classification see figure images/asymmetric/classification.png.
 
 Compare execution time of classifiers
 
@@ -91,7 +91,24 @@ Runtime sklearn.neighbors.RadiusNeighborsClassifier = 10.793 sec
 My classifier is 10.31 x faster than the sklearn classifier.
 ```
 
-Look for the generated figures in directory 'images', which should look similar to
+More importantly, look for the generated figures in directory 'images', 
+which should look similar to the following.
+
+#### Full dataset
+
+Using all 50 samples from each of three species of Iris 
+(Iris setosa, Iris virginica and Iris versicolor).
+
+![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/full_dataset/cm.png)
+![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/full_dataset/classification.png)
+
+#### Asymmetric label frequency
+
+Using no Iris setosa, all 50 Iris versicolor, and only the first 20 Iris versicolor 
+samples.
+
+![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/asymmetric/cm.png)
+![alt text](https://github.com/schneider-source/neighbors-classifier/blob/master/images/full_dataset/asymmetric.png)
 
 ## License
 
